@@ -36,6 +36,7 @@ export const useAuthStore = defineStore ('authStore', {
             } else {
                 localStorage.setItem('token', data.token)
                 this.user = data.user
+                this.errors = {}
                 this.router.push({name : 'home'})
             }
         },
@@ -51,6 +52,7 @@ export const useAuthStore = defineStore ('authStore', {
                 if (response.ok) {
                     localStorage.removeItem('token')
                     this.user = null
+                    this.errors = {}
                     this.router.push({name : 'home'})
 
                 } else {

@@ -1,16 +1,17 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
+    const { errors } = storeToRefs(useAuthStore())
+    const { authenticate } = useAuthStore()
+    onMounted(() => errors.value = {})
     const formData = reactive({
         name : '',
         email : '',
         password : '',
         password_confirmation : ''
     })
-    const { errors } = storeToRefs(useAuthStore())
-    const { authenticate } = useAuthStore();
 </script>
 
 <template>
