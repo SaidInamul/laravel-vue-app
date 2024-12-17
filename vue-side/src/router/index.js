@@ -16,9 +16,8 @@ const router = createRouter({
     },
     {
       path: '/posts/:id',
-      name: 'post',
+      name: 'show',
       component: PostView,
-      props: true
     },
     {
       path: '/register',

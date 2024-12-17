@@ -4,7 +4,6 @@ import { useAuthStore } from './stores/auth';
  
 const authStore = useAuthStore()
 const { logout } = useAuthStore();
-// onMounted(authStore.getUser)
 </script>
 
 <template>

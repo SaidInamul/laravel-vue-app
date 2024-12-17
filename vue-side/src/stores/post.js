@@ -6,7 +6,7 @@ export const usePostStore = defineStore ('postStore', {
         return {
             title : '',
             body : '',
-            errors : {},
+            errors : ref({}),
             posts : ref([]),
             post : ref([])
         }
@@ -22,7 +22,7 @@ export const usePostStore = defineStore ('postStore', {
                 const data = await response.json()
                 this.posts.value = data
             } catch (error) {
-                console.log('Error : ' + error)
+                this.errors = error
             }
         },
         // show - show one post
@@ -32,8 +32,7 @@ export const usePostStore = defineStore ('postStore', {
                     method : 'get',
                 })
                 const data = await response.json()
-                this.post.value = data
-                this.router.push({name : 'post'})
+                this.post.value = data.post
             } catch (error) {
                 console.log('Error : ' + error)
             }
@@ -42,17 +41,38 @@ export const usePostStore = defineStore ('postStore', {
         async storePost (formData) {
             const response = await fetch ('/api/posts', {
                 method : 'post',
-                body : JSON.stringify(formData)
+                headers : {
+                    Authorization : `Bearer ${localStorage.getItem('token')}`,
+                },
+                body : JSON.stringify(formData),
             })
             const data = await response.json()
             if (data.errors) {
                 this.errors = data.errors
             } else {
-                this.title = ''
-                this.body = ''
                 this.errors = {}
                 this.router.push({name : 'home'})
             }
         },
+
+        // async updatePost (formData, id) {
+        //     const response = await fetch (`/api/posts/${id}`, {
+        //         method : 'patch',
+        //         headers : {
+        //             Authorization : `Bearer ${localStorage.getItem('token')}`,
+        //         },
+        //         body : JSON.stringify(formData),
+        //     })
+        //     const data = await response.json()
+        //     console.log(data)
+        //     if (data.errors) {
+        //         // this.errors = data.errors
+        //         // console.log(data)
+        //     } else {
+        //         // this.errors = {}
+        //         // this.router.push({name : 'home'})
+        //         // console.log(data)
+        //     }
+        // }
     }
 })

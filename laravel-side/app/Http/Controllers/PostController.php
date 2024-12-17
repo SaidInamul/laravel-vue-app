@@ -24,7 +24,7 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         //
-        return Post::all();
+        return Post::with('user')->latest()->get();;
     }
 
     /**
@@ -35,11 +35,11 @@ class PostController extends Controller implements HasMiddleware
         //
         $fields = $request->validate([
             'title' => ['required', 'max:255'],
-            'body' => ['required', 'max:255']
+            'body' => ['max:255']
         ]);
         $fields['teaser'] = Str::words($fields['body'], 10, '...');
         $post = $request->user()->posts()->create($fields);
-        return ['post' => $post];
+        return ['post' => $post, 'user' => $post->user];
     }
 
     /**
@@ -48,7 +48,7 @@ class PostController extends Controller implements HasMiddleware
     public function show(Post $post)
     {
         //
-        return $post;
+        return ['post' => $post, 'user' => $post->user];
     }
 
     /**

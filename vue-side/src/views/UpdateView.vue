@@ -1,10 +1,18 @@
 <script setup>
-    import { onMounted, reactive } from 'vue'
+    import { onMounted, reactive, defineProps } from 'vue'
     import { usePostStore } from '@/stores/post'
 
-    const { storePost } = usePostStore()
+    const { updatePost } = usePostStore()
     const useStore = usePostStore()
-    onMounted(() => useStore.errors.value = {})
+    onMounted(() => {
+        useStore.errors.value = {}
+    })
+    const props = defineProps({
+        id : {
+            type : String,
+            required : true
+        }
+    })
     const formData = reactive({
             title : '',
             body : ''

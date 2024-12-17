@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useAuthStore = defineStore ('authStore', {
     state : () => {
@@ -11,7 +12,7 @@ export const useAuthStore = defineStore ('authStore', {
     actions : {
         async getUser () {
             if (localStorage.getItem('token')) {
-                const response = await fetch('api/user', {
+                const response = await fetch('../api/user', {
                     headers : {
                         authorization : `Bearer ${localStorage.getItem('token')}`,
                     },
