@@ -1,37 +1,44 @@
 <script setup>
-    import { onMounted, reactive, defineProps } from 'vue'
+    import { onMounted, reactive } from 'vue'
     import { usePostStore } from '@/stores/post'
+    import { useAuthStore } from '@/stores/auth'
+    import { useRouter, useRoute } from 'vue-router'
+    
+    const router = useRouter();
+    const route = useRoute();
+    const authStore = useAuthStore()
+    const postStore = usePostStore()
+    const { show, updatePost } = usePostStore()
 
-    const { updatePost } = usePostStore()
-    const useStore = usePostStore()
-    onMounted(async () => {
-    post.value = await getPost(route.params.id);
-    if (user.value.id !== post.value.user_id) {
-        router.push({ name: "home" });
-    } else {
-        formData.title = post.value.title;
-        formData.body = post.value.body;
-    }
-    });
     const formData = reactive({
-            title : '',
-            body : ''
-    })
+        title: '',
+        body: '',
+    });
+    onMounted(async () => {
+        postStore.errors.value = {}
+        await show(route.params.id)
+        if (authStore.user.id !== postStore.post.value.user_id) {
+            router.push({ name: "home" });
+        } else {
+            formData.title = postStore.post.value.title;
+            formData.body = postStore.post.value.body;
+        }
+    });
 </script>
 
 <template>
     <main>
-        <h1 class="title">Create a new post</h1>
+        <h1 class="title">Update your post</h1>
         <form 
         class="w-1/2 mx-auto space-y-6" 
-        @submit.prevent="storePost(formData)">
+        @submit.prevent="updatePost(formData, postStore.post.value)">
             <div>
                 <input
                 type="text"
                 placeholder="title"
                 v-model="formData.title">
-                <p v-if="useStore.errors.title" class="error">
-                    {{ useStore.errors.title[0]}}
+                <p v-if="postStore.errors.title" class="error">
+                    {{ postStore.errors.title[0]}}
                 </p>
             </div>
             <div>

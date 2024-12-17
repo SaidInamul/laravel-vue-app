@@ -29,7 +29,6 @@
                             🗑️
                         </button>
                     </form>
-                    <p>✍️</p>
                     <router-link :to="{ name: 'update', params: { id: postStore.post.value.id } }" class="text-xl">
                         ✍️
                     </router-link>

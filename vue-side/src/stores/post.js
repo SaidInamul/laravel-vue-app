@@ -14,7 +14,7 @@ export const usePostStore = defineStore ('postStore', {
     },
     getters : {},
     actions : {
-        // index - view all post
+        // Index - get all post
         async index () {
             try {
                 const response = await fetch ('/api/posts', {
@@ -23,10 +23,10 @@ export const usePostStore = defineStore ('postStore', {
                 const data = await response.json()
                 this.posts.value = data
             } catch (error) {
-                this.errors = error
+                console.log(error)
             }
         },
-        // show - show one post
+        // Show - get one post
         async show (id) {
             try {
                 const response = await fetch (`/api/posts/${id}`, {
@@ -38,7 +38,7 @@ export const usePostStore = defineStore ('postStore', {
                 console.log('Error : ' + error)
             }
         },
-        // store
+        // Store
         async storePost (formData) {
             const response = await fetch ('/api/posts', {
                 method : 'post',
@@ -50,33 +50,38 @@ export const usePostStore = defineStore ('postStore', {
             const data = await response.json()
             if (data.errors) {
                 this.errors = data.errors
-                console.log(this.errors)
             } else {
                 this.errors = {}
                 this.router.push({name : 'home'})
             }
         },
-
-        // async updatePost (formData, id) {
-        //     const response = await fetch (`/api/posts/${id}`, {
-        //         method : 'patch',
-        //         headers : {
-        //             Authorization : `Bearer ${localStorage.getItem('token')}`,
-        //         },
-        //         body : JSON.stringify(formData),
-        //     })
-        //     const data = await response.json()
-        //     console.log(data)
-        //     if (data.errors) {
-        //         // this.errors = data.errors
-        //         // console.log(data)
-        //     } else {
-        //         // this.errors = {}
-        //         // this.router.push({name : 'home'})
-        //         // console.log(data)
-        //     }
-        // },
-
+        // Update
+        async updatePost (formData, post) {
+            const authStore = useAuthStore()
+            if (authStore.user.id === post.user_id) {
+                const response = await fetch (`/api/posts/${post.id}`, {
+                    method : 'put',
+                    headers : {
+                        Authorization : `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body : JSON.stringify(formData),
+                })
+                const data = await response.json()
+                console.log(data)
+                if (data.errors) {
+                    this.errors = data.errors
+                }
+                else {
+                    this.errors = {}
+                    this.router.push({name : 'home'})
+                }
+            }
+            else {
+                this.errors.value = {message : 'Unauthorised user'}
+                console.log(this.errors.value)
+            }
+        },
+        // Delete
         async deletePost (post) {
             try {
                 const authStore = useAuthStore()

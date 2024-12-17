@@ -58,7 +58,14 @@ class PostController extends Controller implements HasMiddleware
     {
         //
         Gate::authorize('update', $post);
-        return $post->update($request->all())
+        $fields = $request->validate([
+            'title' => ['required', 'max:255'],
+            'body' => ['max:255']
+        ]);
+        $fields['body'] == ''
+            ? $fields['teaser'] = ''
+            : $fields['teaser'] = Str::words($fields['body'], 10, '...');
+        return $post->update($fields)
             ? ['success' => true]
             : ['success' => false];
     }
