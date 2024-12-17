@@ -27,3 +27,10 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Example picture
+<img width="1440" alt="Screenshot 2024-12-18 at 5 12 58 AM" src="https://github.com/user-attachments/assets/d79827b9-d09e-4597-905e-7146585c4612" />
+<img width="1440" alt="Screenshot 2024-12-18 at 5 13 19 AM" src="https://github.com/user-attachments/assets/39216a86-ce7e-4470-9b52-a0917b7a113f" />
+<img width="1440" alt="Screenshot 2024-12-18 at 5 13 50 AM" src="https://github.com/user-attachments/assets/6fce77b2-4f7e-4e90-b955-267545d9df7f" />
+<img width="1440" alt="Screenshot 2024-12-18 at 5 14 12 AM" src="https://github.com/user-attachments/assets/f5f80840-5796-4643-a0c2-b207e88d3173" />
+<img width="1440" alt="Screenshot 2024-12-18 at 5 14 19 AM" src="https://github.com/user-attachments/assets/148ddd91-3e7f-4953-a850-5980231b6d89" />
