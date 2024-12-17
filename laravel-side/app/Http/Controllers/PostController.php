@@ -24,7 +24,7 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         //
-        return Post::with('user')->latest()->get();;
+        return Post::with('user')->latest()->get();
     }
 
     /**
@@ -58,8 +58,9 @@ class PostController extends Controller implements HasMiddleware
     {
         //
         Gate::authorize('update', $post);
-        $post->update($request->all());
-        return $post;
+        return $post->update($request->all())
+            ? ['success' => true]
+            : ['success' => false];
     }
 
     /**
@@ -69,7 +70,8 @@ class PostController extends Controller implements HasMiddleware
     {
         //
         Gate::authorize('delete', $post);
-        $post->delete();
-        return Post::paginate(5);
+        return $post->delete()
+            ? ['success' => true]
+            : ['success' => false];
     }
 }

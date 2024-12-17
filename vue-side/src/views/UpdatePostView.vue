@@ -4,15 +4,15 @@
 
     const { updatePost } = usePostStore()
     const useStore = usePostStore()
-    onMounted(() => {
-        useStore.errors.value = {}
-    })
-    const props = defineProps({
-        id : {
-            type : String,
-            required : true
-        }
-    })
+    onMounted(async () => {
+    post.value = await getPost(route.params.id);
+    if (user.value.id !== post.value.user_id) {
+        router.push({ name: "home" });
+    } else {
+        formData.title = post.value.title;
+        formData.body = post.value.body;
+    }
+    });
     const formData = reactive({
             title : '',
             body : ''

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useAuthStore } from './auth'
 
 export const usePostStore = defineStore ('postStore', {
     state : () => {
@@ -49,6 +50,7 @@ export const usePostStore = defineStore ('postStore', {
             const data = await response.json()
             if (data.errors) {
                 this.errors = data.errors
+                console.log(this.errors)
             } else {
                 this.errors = {}
                 this.router.push({name : 'home'})
@@ -73,6 +75,35 @@ export const usePostStore = defineStore ('postStore', {
         //         // this.router.push({name : 'home'})
         //         // console.log(data)
         //     }
-        // }
+        // },
+
+        async deletePost (post) {
+            try {
+                const authStore = useAuthStore()
+                if (authStore.user.id === post.user_id) {
+                    const response = await fetch (`/api/posts/${post.id}`, {
+                        method : 'delete',
+                        headers : {
+                            Authorization : `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    })
+                    const data = await response.json()
+                    if (response.ok && data.success !== undefined) {
+                        this.errors = {}
+                        this.router.push({name : 'home'})
+                    } else {
+                        this.errors.value = {message : 'Unable to delete the post', data}
+                        console.log(this.errors.value)
+                    }
+                }
+                else {
+                    this.errors.value = {message : 'Unauthorised user'}
+                    console.log(this.errors.value)
+                }
+            } catch (error) {
+                this.errors.value = {message : 'Unable to delete the post', error}
+                console.log(this.errors.value)
+            }
+        },
     }
 })

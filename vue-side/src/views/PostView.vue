@@ -1,15 +1,11 @@
 <script setup>
-    import { defineProps, onMounted } from 'vue';
-    import { usePostStore } from '@/stores/post';
-    import { useRoute } from 'vue-router';
+    import { onMounted } from 'vue'
+    import { usePostStore } from '@/stores/post'
+    import { useAuthStore } from '@/stores/auth';
+    import { useRoute } from 'vue-router'
 
-    // const props = defineProps({
-    //     id : {
-    //         type : String,
-    //         required : true
-    //     }
-    // })
-    const { show } = usePostStore()
+    const { show, deletePost } = usePostStore()
+    const authStore = useAuthStore();
     const route = useRoute()
     const postStore = usePostStore()
     onMounted(async () => {
@@ -23,7 +19,22 @@
             <h1 class="title">
                 {{ postStore.post.value.title }}
             </h1>
-            <p class="text-center text-sm text-emerald-500">Posted by : {{ postStore.post.value.user?.name || 'Unknown' }}</p>
+            <div class="flex items-center justify-center space-x-6">
+                <p class="text-center text-sm text-emerald-500">
+                    Posted by : {{ postStore.post.value.user?.name || 'Unknown' }}
+                </p>
+                <div class="flex items-center space-x-6" v-if="authStore.user && authStore.user.id === postStore.post.value.user_id">
+                    <form @submit.prevent="deletePost(postStore.post.value)">
+                        <button class="text-xl">
+                            🗑️
+                        </button>
+                    </form>
+                    <p>✍️</p>
+                    <router-link :to="{ name: 'update', params: { id: postStore.post.value.id } }" class="text-xl">
+                        ✍️
+                    </router-link>
+                </div>
+            </div>
             <div class="text-emerald-600 leading-8" v-html="postStore.post.value.body"></div>
         </div>
         <div v-else>

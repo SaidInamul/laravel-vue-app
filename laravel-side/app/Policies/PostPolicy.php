@@ -26,6 +26,6 @@ class PostPolicy
     {
         return $user->isAdmin || $user->id === $post->user_id
             ? Response::allow()
-            : Response::deny('You are not authorise');
+            : Response::deny('You are not authorise!!!');
     }
 }
