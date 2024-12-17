@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import CreatePostView from '../views/CreatePostView.vue'
+import PostView from '../views/PostView.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -12,6 +13,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/posts/:id',
+      name: 'post',
+      component: PostView,
+      props: true
     },
     {
       path: '/register',

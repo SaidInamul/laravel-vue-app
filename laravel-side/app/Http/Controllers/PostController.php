@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePostRequest;
@@ -23,7 +24,7 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         //
-        return Post::paginate(5);
+        return Post::all();
     }
 
     /**
@@ -36,6 +37,7 @@ class PostController extends Controller implements HasMiddleware
             'title' => ['required', 'max:255'],
             'body' => ['required', 'max:255']
         ]);
+        $fields['teaser'] = Str::words($fields['body'], 10, '...');
         $post = $request->user()->posts()->create($fields);
         return ['post' => $post];
     }

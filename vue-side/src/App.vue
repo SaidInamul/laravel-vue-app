@@ -1,8 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import { useAuthStore } from './stores/auth';
-import { onMounted } from 'vue';
-
+ 
 const authStore = useAuthStore()
 const { logout } = useAuthStore();
 // onMounted(authStore.getUser)
